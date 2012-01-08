@@ -1,5 +1,17 @@
 #include <string.h>
 
+struct url {
+    char *name;
+    char *suffix;
+};
+
+struct bs_entries {
+    char *suffix;
+    char **names;
+    size_t *namelen;
+    size_t n_names;
+};
+
 int bs1(char *url, size_t len, char **ans);
 
 #ifdef UNIT_TEST
