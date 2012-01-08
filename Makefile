@@ -4,3 +4,5 @@ bs.o: bs.h bs.c
 
 test: test.c bs.o
 	$(CC) test.c bs.o -o test
+clean:
+	rm -f *.o test
