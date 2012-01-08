@@ -1,5 +1,9 @@
 CC=gcc
 CFLAGS=
+
+bs: bs.o sample.c
+	$(CC) $(CFLAGS) bs.o sample.c -o sample
+
 bs.o: bs.h bs.c
 	$(CC) $(CFLAGS) -c bs.c
 

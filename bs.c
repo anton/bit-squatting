@@ -2,17 +2,9 @@
 #include <ctype.h>
 #include <stdio.h>
 
-int bs1(char *url, size_t len, char **ans)
+inline char toggle_bit(char c, size_t b)
 {
-    char *suffix;
-    if (split_url(ans, &suffix, url, len))
-        return 1;
-
-    size_t loc = random_loc(*ans);
-
-    (*ans)[loc] = bitsquat_char((*ans)[loc]);
-
-    return 0;
+    return c ^ (1 << b);
 }
 
 char bitsquat_char(char c)
@@ -33,11 +25,6 @@ inline size_t random_loc(const char *str)
     return (size_t) rand() % strlen(str);
 }
 
-inline char toggle_bit(char c, size_t b)
-{
-    return c ^ (1 << b);
-}
-
 int split_url(char **name, char **suffix, char *url, size_t len)
 {
     *suffix = strchr(url, '.');
@@ -50,3 +37,17 @@ int split_url(char **name, char **suffix, char *url, size_t len)
 
     return 0;
 }
+
+int bs1(char *url, size_t len, char **ans)
+{
+    char *suffix;
+    if (split_url(ans, &suffix, url, len))
+        return 1;
+
+    size_t loc = random_loc(*ans);
+
+    (*ans)[loc] = bitsquat_char((*ans)[loc]);
+
+    return 0;
+}
+
