@@ -1,3 +1,5 @@
+#ifdef UNIT_TEST
+
 #include "bs.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,3 +73,5 @@ int is_valid_str(char *buf, int len)
     }
     return is_valid;
 }
+
+#endif /* UNIT_TEST */
