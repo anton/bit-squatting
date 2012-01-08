@@ -53,9 +53,9 @@ int bs1(char *url, size_t len, char **ans)
     return 0;
 }
 
-struct url create_url(char *buf)
+struct Url create_url(char *buf)
 {
-    struct url m_url;
+    struct Url m_url;
 
     m_url.name = malloc(256*sizeof(char));
 

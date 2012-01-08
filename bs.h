@@ -1,11 +1,11 @@
 #include <string.h>
 
-struct url {
+struct Url {
     char *name;
     char *suffix;
 };
 
-struct bs_entries {
+struct BSentries {
     char *suffix;
     char **names;
     size_t *namelen;
@@ -19,5 +19,5 @@ inline char toggle_bit(char c, size_t b);
 int split_url(char **name, char **suffix, char *buf, size_t len);
 inline size_t random_loc(const char *str);
 char bitsquat_char(char c);
-struct url create_url(char *);
+struct Url create_url(char *);
 #endif /* UNIT_TEST */

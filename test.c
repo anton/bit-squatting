@@ -61,7 +61,7 @@ int main()
 
     /* create_url */
     {
-        struct url m_url;
+        struct Url m_url;
         m_url = create_url("github.com");
         ok(0 == strcmp(m_url.name, "github"));
         ok(0 == strcmp(m_url.suffix, "com"));
