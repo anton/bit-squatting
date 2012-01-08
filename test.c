@@ -59,6 +59,14 @@ int main()
         free(ans);
     }
 
+    /* create_url */
+    {
+        struct url m_url;
+        m_url = create_url("github.com");
+        ok(0 == strcmp(m_url.name, "github"));
+        ok(0 == strcmp(m_url.suffix, "com"));
+    }
+
     return 0;
 }
 

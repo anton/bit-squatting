@@ -1,6 +1,7 @@
 #include "bs.h"
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 inline char toggle_bit(char c, size_t b)
 {
@@ -52,3 +53,15 @@ int bs1(char *url, size_t len, char **ans)
     return 0;
 }
 
+struct url create_url(char *buf)
+{
+    struct url m_url;
+
+    m_url.name = malloc(256*sizeof(char));
+
+    if (split_url(&m_url.name, &m_url.suffix, buf, strlen(buf))) {
+        free(m_url.name);
+    }
+
+    return m_url;
+}
