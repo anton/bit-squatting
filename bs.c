@@ -10,14 +10,15 @@ inline char toggle_bit(char c, size_t b)
 char bitsquat_char(char c)
 {
     size_t try_cnt = 0;
+    char bs_char;
     do {
-        c = toggle_bit(c, rand()%4);
+        bs_char = toggle_bit(c, rand()%4);
         try_cnt++;
-    } while(!isalnum(c));
+    } while(!isalnum(bs_char));
 #ifdef DEBUG
     fprintf(stderr, "Toggled %d bits before finding valid letter (%c).\n", (int)try_cnt, c);
 #endif
-    return c;
+    return bs_char;
 }
 
 inline size_t random_loc(const char *str)
