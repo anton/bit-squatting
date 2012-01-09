@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
 
 #define ok(a) if ((a)) { printf("ok\n"); } else \
 { printf("not ok - row %s:%d\n", __FILE__, __LINE__); }
@@ -21,12 +22,12 @@ int main()
     {
         char *name, *suffix;
         name = malloc(256*sizeof(char));
-        ok(0 == split_url(&name, &suffix, "github.com", 10));
+        ok(0 == split_url(&name, &suffix, "github.com"));
 
         ok(0 == strcmp(name, "github"));
         ok(0 == strcmp(suffix, "com"));
 
-        ok(0 != split_url(&name, &suffix, "www.github.com", 10));
+        ok(0 != split_url(&name, &suffix, "www.github.com"));
         free(name);
     }
 
@@ -47,24 +48,29 @@ int main()
         ok(loc > 0 && loc < 6);
     }
 
-    /* bs1 */
-    {
-        char *ans, *suffix;
-        srand(time(NULL));
-
-        ans = malloc(256*sizeof(char));
-        ok(0 == bs1("github.com", 10, &ans));
-        ok(is_valid_str(ans, 6));
-        printf("res: %s\n", ans);
-        free(ans);
-    }
-
     /* create_url */
     {
         struct Url m_url;
         m_url = create_url("github.com");
         ok(0 == strcmp(m_url.name, "github"));
         ok(0 == strcmp(m_url.suffix, "com"));
+        free_url(m_url);
+    }
+
+    /* generate_entries and bitsquat_entries */
+    {
+        struct BSentries bs_entries;
+        struct Url url = create_url("github.com");
+        bs_entries = generate_entries(url, 3);
+        ok(3 == bs_entries.n_names);
+        ok(0 == strcmp(bs_entries.suffix, "com"));
+        ok(0 == strcmp(bs_entries.names[0], "github"));
+
+        bitsquat_entries(bs_entries);
+        ok(0 != strcmp(bs_entries.names[0], "github"));
+
+        free_url(url);
+        free_bs_entries(bs_entries);
     }
 
     return 0;

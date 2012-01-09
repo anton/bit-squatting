@@ -3,22 +3,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-void bitsquat_once(char *url)
-{
-    char *ans = malloc(256*sizeof(char));
-
-    if (bs1(url, strlen(url), &ans)) {
-        exit(-1);
-    }
-
-    printf("%s\n", ans);
-
-    free(ans);
-}
-
 int main(int argc, char *argv[])
 {
     int ntimes = 1;
+    struct Url url;
+    struct BSentries bs_entries;
 
     srand(time(NULL));
 
@@ -32,16 +21,15 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Repeating %d times.\n", ntimes);
     }
 
-    if (ntimes == 1) {
-        bitsquat_once(argv[1]);
-    } else if (ntimes > 1) {
-        int i;
-        for (i=0; i<ntimes; i++)
-            bitsquat_once(argv[1]);
-    } else {
+    if (ntimes < 0) {
         fprintf(stderr, "Unable to repeat %d times.\n", ntimes);
         exit(-1);
     }
+
+    url = create_url(argv[1]);
+    bs_entries = generate_entries(url, ntimes);
+    bitsquat_entries(bs_entries);
+    print_bs_entries(bs_entries);
 
     return 0;
 }
