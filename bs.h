@@ -45,8 +45,8 @@ void free_url(struct Url url);
 void free_bs_entries(struct BSentries bs_entries);
 
 #ifdef UNIT_TEST
-inline char toggle_bit(char c, size_t b);
-int split_url(char **name, char **suffix, char *buf);
-inline size_t random_loc(const char *str);
+char toggle_bit(char c, size_t b);
+int split_url(char *, size_t, char **, const char *);
+size_t random_loc(const char *str);
 char bitsquat_char(char c);
 #endif /* UNIT_TEST */
