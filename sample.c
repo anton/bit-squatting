@@ -29,15 +29,17 @@
 
 int main(int argc, char *argv[])
 {
-    int ntimes = 1;
+    int ntimes = 1; // Number of bitsquatted entries (default 1)
+
     struct Url url;
     struct BSentries bs_entries;
 
+    // Seed the PRNG using current time (caller may override for deterministic tests)
     srand(time(NULL));
 
     if (argc < 2) {
         fprintf(stderr, "usage: %s sample.com [times]\n", argv[0]);
-        exit(-1);
+        return EXIT_FAILURE;
     }
 
     if (argc == 3) {
@@ -47,13 +49,35 @@ int main(int argc, char *argv[])
 
     if (ntimes < 0) {
         fprintf(stderr, "Unable to repeat %d times.\n", ntimes);
-        exit(-1);
+        return EXIT_FAILURE;
     }
 
+    // Parse the input URL into name and suffix.
+    // create_url returns a struct Url where:
+    //  - url.name is heap-allocated and must be freed via free_url()
+    //  - url.suffix points into the original input buffer (argv[1]) or is NULL on failure
     url = create_url(argv[1]);
+    if (url.name == NULL || url.suffix == NULL) {
+        fprintf(stderr, "Invalid URL: %s\n", argv[1]);
+        /* create_url leaves fields NULL on failure; nothing to free */
+        return EXIT_FAILURE;
+    }
+
+    // Generate ntimes entries (names duplicated / allocated inside generate_entries).
+    // Caller owns bs_entries and must call free_bs_entries() when done.
     bs_entries = generate_entries(url, ntimes);
+
+    // bitsquat_entries modifies bs_entries in-place
     bitsquat_entries(bs_entries);
+
+    // Print results as name.suffix lines
     print_bs_entries(bs_entries);
 
-    return 0;
+    // Free all allocated resources in the correct order:
+    // - free generated entries
+    // - free URL name
+    free_bs_entries(bs_entries);
+    free_url(url);
+
+    return EXIT_SUCCESS;
 }
