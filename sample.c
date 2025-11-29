@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
     // Caller owns bs_entries and must call free_bs_entries() when done.
     bs_entries = generate_entries(url, ntimes);
 
-    // bitsquat_entries modifies bs_entries in-place
-    bitsquat_entries(bs_entries);
+    // bitsquat_entries modifies bs_entries in-place, only 1 bit is flipped
+    bitsquat_entries(bs_entries, 1);
 
     // Print results as name.suffix lines
     print_bs_entries(bs_entries);

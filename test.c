@@ -11,6 +11,14 @@
 
 int is_valid_str(char *buf, int len);
 
+void print_binary(char c)
+{
+    printf(" 0b");
+    for (int i = 7; i >= 0; i--) {
+        putchar((c & (1 << i)) ? '1' : '0');
+    }
+}
+
 int main()
 {
     /* toggle_bit */
@@ -63,7 +71,41 @@ int main()
     /* bitsquat_char */
     {
         char c = 'a';
-        ok('a' != bitsquat_char(c));
+        ok('a' != bitsquat_char(c, 1));
+    }
+
+    {
+#ifdef DEBUG
+        for (char c = 'A'; c <= 'Z'; c++) {
+            for (int i = 0; i < 100; ++i) {
+                char result = bitsquat_char(c, 1);
+                printf("%c %c", c, result);
+                print_binary(c);
+                print_binary(result);
+                printf("\n");
+            }
+        }
+
+        for (char c = 'a'; c <= 'z'; c++) {
+            for (int i = 0; i < 100; ++i) {
+                char result = bitsquat_char(c, 1);
+                printf("%c %c", c, result);
+                print_binary(c);
+                print_binary(result);
+                printf("\n");
+            }
+        }
+
+        for (char c = '0'; c <= '9'; c++) {
+            for (int i = 0; i < 100; ++i) {
+                char result = bitsquat_char(c, 1);
+                printf("%c %c", c, result);
+                print_binary(c);
+                print_binary(result);
+                printf("\n");
+            }
+        }
+#endif
     }
 
     {
@@ -71,7 +113,7 @@ int main()
         for (int i=0; i<100; ++i)
         {
             char c = 'a';
-            if(isalnum((unsigned char)bitsquat_char(c)))
+            if(isalnum((unsigned char)bitsquat_char(c, 1)))
                 cnt++;
         }
         ok(cnt == 100);
@@ -86,7 +128,7 @@ int main()
         int distinct = 0;
 
         for (int i = 0; i < N; ++i) {
-            unsigned char out = (unsigned char) bitsquat_char('a');
+            unsigned char out = (unsigned char) bitsquat_char('a', 1);
             if (!seen[out]) {
                 //seen[out] = 1;
                 distinct++;
@@ -146,7 +188,7 @@ int main()
         ok(0 == strcmp(bs_entries.suffix, "com"));
         ok(0 == strcmp(bs_entries.names[0], "github"));
 
-        bitsquat_entries(bs_entries);
+        bitsquat_entries(bs_entries, 1);
         ok(0 != strcmp(bs_entries.names[0], "github"));
 
         free_url(url);

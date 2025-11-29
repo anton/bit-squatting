@@ -24,14 +24,19 @@ char toggle_bit(char c, size_t b)
  * when an alphanumeric character is found.
  *
  * @param c Character that should be bitsquatted.
+ * @param n Number of flips
  * @return The bitsquatted character.
  */
-char bitsquat_char(char c)
+char bitsquat_char(char c, int n)
 {
     size_t try_cnt = 0;
     char bs_char;
     do {
         bs_char = toggle_bit(c, rand()%8);
+        for (int i=1; i<n; ++i)
+        {
+            bs_char = toggle_bit(bs_char, rand()%8);
+        }
         try_cnt++;
     } while(!isalnum(bs_char));
 #ifdef DEBUG
@@ -176,15 +181,16 @@ struct BSentries generate_entries(struct Url url, size_t n_entries)
  * Take a struct BSentries and bitsquat them.
  *
  * @param bs_entries The struct BSentries to be bitsquatted.
+ * @param n_flips Number of bits that is flipped.
  */
-void bitsquat_entries(struct BSentries bs_entries)
+void bitsquat_entries(struct BSentries bs_entries, int n_flips)
 {
     size_t i;
 
     for (i=0; i<bs_entries.n_names; ++i) {
         char *entry = bs_entries.names[i];
         size_t loc = random_loc(entry);
-        entry[loc] = bitsquat_char(entry[loc]);
+        entry[loc] = bitsquat_char(entry[loc], n_flips);
     }
 
     return;
