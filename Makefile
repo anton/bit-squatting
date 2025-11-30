@@ -36,6 +36,7 @@ test_msan: test.c bs.c bs.h
 libbs.so: bs.h bs.c
 	$(CC) $(CFLAGS) -c -fpic bs.c
 	$(CC) $(CFLAGS) -shared -lc -o libbs.so bs.o
+	cp libbs.so libbs/bs.so
 
 run: example
 	LD_LIBRARY_PATH=./ ./example github.com 3
